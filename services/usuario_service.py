@@ -23,3 +23,28 @@ def cadastrar_usuario(nome : str, email: str, senha : str) -> Usuario | None :
         return None
     finally:
         conn.close()
+
+
+
+def login(email: str, senha: str) -> Usuario | None:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE email = ? AND senha = ?",
+        (email.strip().lower(), _hash_senha(senha))
+    )
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return Usuario(id=row['id'], nome=row['nome'], email=row['email'],
+                       senha='', criado_em=row['criado_em'])
+    return None
+
+
+def email_ja_cadastrado(email: str) -> bool:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM usuarios WHERE email = ?", (email.strip().lower(),))
+    existe = cursor.fetchone() is not None
+    conn.close()
+    return existe
