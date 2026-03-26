@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="mb-0">Dashboard — {{ "%02d"|format(mes) }}/{{ ano }}</h5>
+</div>
+
+<!-- Cards de saldo -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card card-receita shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted mb-1 small">Receitas do mês</p>
+                    <h4 class="text-success mb-0">R$ {{ "%.2f"|format(saldo.receita) }}</h4>
+                </div>
+                <i class="bi bi-arrow-up-circle text-success fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-despesa shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted mb-1 small">Despesas do mês</p>
+                    <h4 class="text-danger mb-0">R$ {{ "%.2f"|format(saldo.despesa) }}</h4>
+                </div>
+                <i class="bi bi-arrow-down-circle text-danger fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-saldo shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted mb-1 small">Saldo do mês</p>
+                    <h4 class="{{ 'text-primary' if saldo.saldo >= 0 else 'text-danger' }} mb-0">
+                        R$ {{ "%.2f"|format(saldo.saldo) }}
+                    </h4>
+                </div>
+                <i class="bi bi-wallet2 text-primary fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações rápidas -->
+<div class="d-flex gap-2 mb-4">
+    <a href="/lancamento/receita" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Lançar Receita
+    </a>
+    <a href="/lancamento/despesa" class="btn btn-danger">
+        <i class="bi bi-dash-circle"></i> Lançar Despesa
+    </a>
+</div>
+
+<!-- Últimas transações -->
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+        <span class="fw-semibold"><i class="bi bi-clock-history"></i> Últimas transações do mês</span>
+        <a href="/extrato" class="btn btn-sm btn-outline-secondary">Ver todas</a>
+    </div>
+    <div class="card-body p-0">
+        {% if transacoes %}
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th class="text-end">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transacoes %}
+                <tr>
+                    <td class="text-muted small">{{ t.data_fmt }}</td>
+                    <td>{{ t.descricao }}</td>
+                    <td>
+                        <span class="badge {{ 'bg-success' if t.tipo == 'receita' else 'bg-danger' }}">
+                            {{ t.tipo }}
+                        </span>
+                    </td>
+                    <td class="text-end fw-semibold {{ 'text-success' if t.tipo == 'receita' else 'text-danger' }}">
+                        {{ '+' if t.tipo == 'receita' else '-' }}R$ {{ "%.2f"|format(t.valor) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted text-center py-4 mb-0">Nenhuma transação no mês atual.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
