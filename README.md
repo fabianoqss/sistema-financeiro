@@ -70,8 +70,6 @@ sistema-financeiro/
    ```
 4. Acesse no navegador: `http://localhost:5000`
 
-> O flag `-v` monta um volume local para persistir os dados do banco SQLite entre reinicializações do container.
-
 ## Como Usar
 1. Na tela inicial, crie uma conta ou faça login.
 2. Ao criar conta, categorias padrão são adicionadas automaticamente.
