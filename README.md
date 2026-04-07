@@ -1,28 +1,25 @@
 # Sistema de Controle Financeiro Pessoal
-
 Aplicação web desenvolvida em Python com Flask para controle de finanças pessoais, com suporte a múltiplos usuários, categorias personalizadas e extrato por período.
-
 ## Funcionalidades
-
 - Cadastro e login de usuários (senha criptografada com SHA-256)
 - Lançamento de receitas e despesas
 - Categorias personalizáveis por usuário
 - Filtros por período (mês/ano)
 - Extrato com saldo
 - Dashboard com resumo financeiro do mês
-
 ## Tecnologias
-
 - Python 3.10+
 - Flask
 - SQLite (via módulo `sqlite3` nativo)
 - Bootstrap 5
-
+- Docker
 ## Estrutura do Projeto
-
 ```
 sistema-financeiro/
 ├── app.py                   # Ponto de entrada (Flask)
+├── requirements.txt         # Dependências do projeto
+├── Dockerfile               # Configuração Docker
+├── .dockerignore
 ├── database/
 │   └── connection.py        # Conexão e criação do banco de dados
 ├── models/
@@ -44,28 +41,46 @@ sistema-financeiro/
     ├── lancamento.html
     └── categorias.html
 ```
-
 ## Como Executar
 
+### Localmente
+
 1. Certifique-se de ter Python 3.10 ou superior instalado.
-2. Instale as dependências:
+2. Crie e ative um ambiente virtual:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
-   pip install flask
+3. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
    ```
-3. Execute o sistema:
-   ```
+4. Execute o sistema:
+   ```bash
    python app.py
+   ```
+5. Acesse no navegador: `http://localhost:5000`
+
+### Com Docker
+
+1. Certifique-se de ter o Docker instalado.
+2. Build da imagem:
+   ```bash
+   docker build -t sistema-financeiro .
+   ```
+3. Execute o container:
+   ```bash
+   docker run -p 5000:5000 -v $(pwd)/data:/app/database sistema-financeiro
    ```
 4. Acesse no navegador: `http://localhost:5000`
 
-## Como Usar
+> O flag `-v` monta um volume local para persistir os dados do banco SQLite entre reinicializações do container.
 
+## Como Usar
 1. Na tela inicial, crie uma conta ou faça login.
 2. Ao criar conta, categorias padrão são adicionadas automaticamente.
 3. Use o menu para lançar receitas/despesas, visualizar o extrato e gerenciar categorias.
-
 ## Requisitos Atendidos
-
 | Requisito | Como foi atendido |
 |---|---|
 | Linguagem principal: Python | Todo o projeto em Python |
