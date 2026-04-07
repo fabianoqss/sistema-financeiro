@@ -64,13 +64,9 @@ sistema-financeiro/
 ### Com Docker
 
 1. Certifique-se de ter o Docker instalado.
-2. Build da imagem:
+2. Build do container.
    ```bash
-   docker build -t sistema-financeiro .
-   ```
-3. Execute o container:
-   ```bash
-   docker run -p 5000:5000 -v $(pwd)/data:/app/database sistema-financeiro
+   docker-compose up --buid
    ```
 4. Acesse no navegador: `http://localhost:5000`
 
